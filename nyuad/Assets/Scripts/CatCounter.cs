@@ -5,55 +5,37 @@ using UnityEngine;
 public class CatCounter : MonoBehaviour
 {
     public int CAT_NO = 4;
-    public GameObject door;
-
+    public bool win = false;
     public int counter = 0;
 
-    public bool win = false;
+    public GameObject cage;
 
-    public Transform cat;
-    Collider m_Collider;
-    Vector3 m_Point;
-
-    private void Start()
+    void onCollisionEnter(Collision col)
     {
-        m_Collider = GetComponent<Collider>();
-        m_Point = cat.position;
-    }
-
-    private void onTriggerEnter(Collider other)
-    {
-        //if (other.gameObject.CompareTag("Cat"))
-        //{
-          //  counter += 1;
-        //}
-    }
-
-    private void onTriggerExit(Collider other)
-    {
-        if (other.gameObject.CompareTag("Cat"))
-        {
-            counter -= 1;
-        }
-    }
-
-    private void onTriggerStay(Collider other)
-    {
-        if (other.gameObject.CompareTag("Cat"))
+        if (col.gameObject.tag == "CAT")
         {
             counter += 1;
         }
     }
 
-    private void Update()
+    void onCollisionExit(Collision col)
     {
-        if (m_Collider.bounds.Contains(m_Point))
+        if (col.gameObject.tag == "CAT")
         {
-            Debug.Log("Bounds contain the point : " + m_Point);
+            counter -= 1;
         }
+    }
+
+    void Update()
+    {
+        if (counter == 4)
+        {
+            win = true;
+        }
+
         if (win)
         {
-            door.SetActive(false);
+            cage.SetActive(false);
         }
     }
 }
